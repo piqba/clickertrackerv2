@@ -40,3 +40,10 @@ Content-Type: application/json
   "timestamp": 1690497968694
 }
 
+
+###
+
+GET {{ClickerR2d2_HostAddress}}/clicks/
+Accept: application/json
+Content-Type: text/event-stream
+
