@@ -41,7 +41,8 @@ CREATE TABLE IF NOT EXISTS clicker_events
     platform     VARCHAR(255) NOT NULL,
     user_agent   VARCHAR(255) NOT NULL,
     timestamp    TIMESTAMP    NOT NULL DEFAULT NOW(),
-    log_raw      JSONB
+    kafka_offset INTEGER      NOT NULL
+
 );
 
 CREATE TABLE IF NOT EXISTS clicker_events_simple
@@ -58,5 +59,12 @@ CREATE TABLE IF NOT EXISTS clicker_events_simple
     platform     VARCHAR(255) NOT NULL,
     user_agent   VARCHAR(255) NOT NULL,
     timestamp    TIMESTAMP    NOT NULL DEFAULT NOW(),
-    log_raw      JSONB
+    kafka_offset INTEGER      NOT NULL
 );
+
+
+--- Selects
+
+
+select *
+from clicker_events_simple;
