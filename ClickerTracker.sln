@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickerBb8", "ClickerBb8\Cl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Share", "Share\Share.csproj", "{BBB63D28-A09C-4149-9A73-D72593067BFD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickerC3p0", "ClickerC3p0\ClickerC3p0.csproj", "{FE173068-BDE0-4E21-8CC4-D4E2C84C96B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{BBB63D28-A09C-4149-9A73-D72593067BFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBB63D28-A09C-4149-9A73-D72593067BFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBB63D28-A09C-4149-9A73-D72593067BFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE173068-BDE0-4E21-8CC4-D4E2C84C96B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE173068-BDE0-4E21-8CC4-D4E2C84C96B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE173068-BDE0-4E21-8CC4-D4E2C84C96B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE173068-BDE0-4E21-8CC4-D4E2C84C96B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
