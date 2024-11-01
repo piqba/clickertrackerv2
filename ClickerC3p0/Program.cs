@@ -1,14 +1,47 @@
+using ClickerBb8.Database;
+using ClickerC3p0.ClickerApiKey.Create;
+using ClickerC3p0.ClickerApiKey.List;
+using ClickerC3p0.ClickerApps.Create;
 using ClickerC3p0.ClickerApps.List;
+using ClickerC3p0.ClickerUsers.Create;
 using ClickerC3p0.ClickerUsers.List;
 
 var builder = WebApplication.CreateBuilder(args);
+const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// https://learn.microsoft.com/en-us/aspnet/core/fundamentals/http-logging/?view=aspnetcore-8.0#enable-http-logging
+builder.Services.AddHttpLogging(o => { });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: myAllowSpecificOrigins,
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
+builder.Services.AddSingleton<IDBConnectionFactory>(_ => 
+    new NpgsqlDbConnectionFactory(builder.Configuration["Database:ConnectionString"]!));
+
+
+
 var app = builder.Build();
+
+Console.WriteLine($"Configuration Time: {DateTime.UtcNow} UTC");
+
+foreach (var c in builder.Configuration.AsEnumerable())
+{
+    Console.WriteLine(c.Key + " = " + c.Value);
+}
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -18,8 +51,14 @@ if (app.Environment.IsDevelopment())
 }
 
 // .NET Minimal APIs using REPR (Request-Endpoint-Response) Design Pattern.
-app.MapClickerAppListEndpoint()
-    .MapUsersListEndpoint();
+// users
+app.MapClickerUsersListEndpoint()
+    .MapClickerUsersCreateEndpoint();
+// apps
+app.MapClickerAppCreateEndpoint()
+    .MapClickerAppListEndpoint();
+// api-keys
+app.MapClickerApiKeyCreateEndpoint()
+    .MapApiKeyListEndpoint();
 
 app.Run();
-

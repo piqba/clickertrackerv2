@@ -1,10 +1,10 @@
-namespace ClickerC3p0.ClickerUsers.List;
+namespace ClickerC3p0.ClickerApiKey.List;
 
 public static class Endpoint
 {
-    public static WebApplication MapClickerUsersListEndpoint(this WebApplication app)
+    public static WebApplication MapApiKeyListEndpoint(this WebApplication app)
     {
-        app.MapGet("/api/users", HandleAsync);
+        app.MapGet("/api/keys", HandleAsync);
         return app;
     }
 
@@ -13,11 +13,11 @@ public static class Endpoint
         return Task.FromResult(
             new Response(
                 1,
-                new List<ResponseClickerUser>
+                new List<ResponseClickerApiKey>
                 {
-                    new ResponseClickerUser(
+                    new ResponseClickerApiKey(
                         Name: "user1",
-                        UserId: 1,
+                        ApiKeyId: 1,
                         CreatedAt: DateTime.Now,
                         UpdatedAt: DateTime.Now
                     )
