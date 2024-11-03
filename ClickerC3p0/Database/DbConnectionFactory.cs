@@ -1,7 +1,7 @@
 using System.Data;
 using Npgsql;
 
-namespace ClickerBb8.Database;
+namespace ClickerC3p0.Database;
 
 public class NpgsqlDbConnectionFactory: IDBConnectionFactory
 {

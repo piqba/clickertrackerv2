@@ -11,3 +11,4 @@
 
 
 - [redpanda-console](http://localhost:8080/overview) defined in docker compose file folder `infra`
+- Postgresql

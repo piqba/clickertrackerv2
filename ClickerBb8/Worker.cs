@@ -1,10 +1,10 @@
 using System.Text.Json;
 using ClickerBb8.Database;
-using ClickerR2d2.dto;
 using Confluent.Kafka;
 using Dapper;
 using Microsoft.Extensions.Options;
 using Share;
+using Share.dto;
 
 namespace ClickerBb8;
 

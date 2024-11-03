@@ -1,9 +1,9 @@
 using System.Text.Json;
-using ClickerR2d2.dto;
 using Confluent.Kafka;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Options;
 using Share;
+using Share.dto;
 
 namespace ClickerR2d2.Clicks;
 

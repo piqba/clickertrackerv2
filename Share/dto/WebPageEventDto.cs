@@ -1,7 +1,6 @@
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace ClickerR2d2.dto;
+namespace Share.dto;
 
 // TODO: pass to share project
 public record WebPageEventDto(

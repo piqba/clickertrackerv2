@@ -1,10 +1,6 @@
-using ClickerBb8.Database;
-using ClickerC3p0.ClickerApiKey.Create;
-using ClickerC3p0.ClickerApiKey.List;
-using ClickerC3p0.ClickerApps.Create;
-using ClickerC3p0.ClickerApps.List;
-using ClickerC3p0.ClickerUsers.Create;
-using ClickerC3p0.ClickerUsers.List;
+
+using ClickerC3p0.ClickerUsers;
+using ClickerC3p0.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -27,9 +23,8 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddSingleton<IDBConnectionFactory>(_ => 
+builder.Services.AddSingleton<IDBConnectionFactory>(_ =>
     new NpgsqlDbConnectionFactory(builder.Configuration["Database:ConnectionString"]!));
-
 
 
 var app = builder.Build();
@@ -42,7 +37,6 @@ foreach (var c in builder.Configuration.AsEnumerable())
 }
 
 
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -52,13 +46,6 @@ if (app.Environment.IsDevelopment())
 
 // .NET Minimal APIs using REPR (Request-Endpoint-Response) Design Pattern.
 // users
-app.MapClickerUsersListEndpoint()
-    .MapClickerUsersCreateEndpoint();
-// apps
-app.MapClickerAppCreateEndpoint()
-    .MapClickerAppListEndpoint();
-// api-keys
-app.MapClickerApiKeyCreateEndpoint()
-    .MapApiKeyListEndpoint();
+app.MapClickerUsersEndpoints();
 
 app.Run();

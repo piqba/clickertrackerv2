@@ -1,7 +1,6 @@
 using System.Collections.Concurrent;
 using System.Text.Json;
 using ClickerR2d2.Clicks;
-using ClickerR2d2.dto;
 using Confluent.Kafka;
 using Microsoft.Extensions.Options;
 using Share;
