@@ -1,4 +1,6 @@
 
+using ClickerC3p0.ClickerApiKeys;
+using ClickerC3p0.ClickerApps;
 using ClickerC3p0.ClickerUsers;
 using ClickerC3p0.Database;
 
@@ -46,6 +48,8 @@ if (app.Environment.IsDevelopment())
 
 // .NET Minimal APIs using REPR (Request-Endpoint-Response) Design Pattern.
 // users
-app.MapClickerUsersEndpoints();
+app.MapClickerUsersEndpoints()
+    .MapClickerApiKeysEndpoints()
+    .MapClickerAppsEndpoints();
 
 app.Run();
