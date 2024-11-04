@@ -3,7 +3,7 @@ using Npgsql;
 
 namespace ClickerC3p0.Database;
 
-public class NpgsqlDbConnectionFactory: IDBConnectionFactory
+public class NpgsqlDbConnectionFactory : IDBConnectionFactory
 {
     private readonly string _connectionString;
 

@@ -6,7 +6,7 @@ var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddHostedService<Worker>();
 builder.Services.Configure<KafkaOptions>(
     builder.Configuration.GetSection("Kafka"));
-builder.Services.AddSingleton<IDBConnectionFactory>(_ => 
+builder.Services.AddSingleton<IDBConnectionFactory>(_ =>
     new NpgsqlDbConnectionFactory(builder.Configuration["Database:ConnectionString"]!));
 
 

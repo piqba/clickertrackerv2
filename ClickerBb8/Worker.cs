@@ -98,9 +98,17 @@ public class Worker : BackgroundService
                                 """,
                                 new
                                 {
-                                    eventDto.ElementId, eventDto.EventType, ElementText = eventDto.ElementType,
-                                    @eventDto.PageUrl, @eventDto.PageTitle, @eventDto.PathName, @eventDto.Id,
-                                    @eventDto.Country, @eventDto.Locale, @eventDto.Platform, @eventDto.UserAgent,
+                                    eventDto.ElementId,
+                                    eventDto.EventType,
+                                    ElementText = eventDto.ElementType,
+                                    @eventDto.PageUrl,
+                                    @eventDto.PageTitle,
+                                    @eventDto.PathName,
+                                    @eventDto.Id,
+                                    @eventDto.Country,
+                                    @eventDto.Locale,
+                                    @eventDto.Platform,
+                                    @eventDto.UserAgent,
                                     kafkaOffset = consumeResult.Offset.Value
                                 }
                             );

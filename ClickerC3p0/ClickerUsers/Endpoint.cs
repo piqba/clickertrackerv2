@@ -31,6 +31,7 @@ public static class Endpoint
             );
             return Results.Json(new { users }, statusCode: StatusCodes.Status200OK);
         });
+
         return app;
     }
 }
