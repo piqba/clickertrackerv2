@@ -1,0 +1,50 @@
+@page "/users"
+@using ClickerBb9.Models
+@using ClickerBb9.Services
+@attribute [StreamRendering]
+@inject C3P0Service service
+
+<PageTitle>Users</PageTitle>
+
+<h1>Users</h1>
+
+
+@if (users == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in users)
+        {
+            <tr>
+                <td>@user.Name</td>
+                <td>@user.CreatedAt</td>
+                <td>@user.UpdatedAt</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private ClickerUser[]? users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var data = await service.GetClickerUser();
+        users = data.users.ToArray();
+    }
+
+}

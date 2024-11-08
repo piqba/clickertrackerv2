@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS clicker_api_key
 (
     api_key_id SERIAL PRIMARY KEY,
     name       VARCHAR(255) NOT NULL,
+    hash_value       VARCHAR(255) NOT NULL,
     created_at TIMESTAMP    NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP    NOT NULL DEFAULT NOW()
 );
@@ -63,7 +64,9 @@ CREATE TABLE IF NOT EXISTS clicker_events_simple
 );
 
 
+
 --- Selects
+
 
 
 select *
