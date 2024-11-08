@@ -29,6 +29,45 @@ public static class Endpoint
             );
             return Results.Json(new { apps }, statusCode: StatusCodes.Status200OK);
         });
+
+        app.MapGet("/api/apps/{id}", async (int id,IDBConnectionFactory dbConnectionFactory) =>
+        {
+            var dbConnection = await dbConnectionFactory.CreateConnectionAsync();
+            var appId = await dbConnection.QueryAsync(
+                """
+                select * from clicker_apps where app_id=@Id
+                """,
+                new {id=id}
+            );
+            return Results.Json(new { appId }, statusCode: StatusCodes.Status200OK);
+
+        });
+        app.MapDelete("/api/apps/{id}", async (int id,IDBConnectionFactory dbConnectionFactory) =>
+        {
+            var dbConnection = await dbConnectionFactory.CreateConnectionAsync();
+            var appId = await dbConnection.ExecuteAsync(
+                """
+                delete from clicker_apps where app_id=@Id
+                """,
+                new {id=id}
+            );
+            return Results.Json(new { appId }, statusCode: StatusCodes.Status200OK);
+
+        });
+        app.MapPut("/api/apps/{id}", async (int id,IDBConnectionFactory dbConnectionFactory, ClickerAppsUpdateRequest request) =>
+        {
+            var dbConnection = await dbConnectionFactory.CreateConnectionAsync();
+            var appId = await dbConnection.ExecuteAsync(
+                """
+                update clicker_apps 
+                set  app_name = @AppName, url = @Url
+                where app_id=@Id
+                """,
+                new {id=id, AppName=request.AppName, Url=request.Url}
+            );
+            return Results.Json(new { appId }, statusCode: StatusCodes.Status200OK);
+
+        });
         return app;
     }
 }

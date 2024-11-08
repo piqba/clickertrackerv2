@@ -12,3 +12,10 @@ public record ClickerAppsCreateRequest(
     [property: JsonPropertyName("api_key_id")]
     int ApiKeyId
 );
+
+public record ClickerAppsUpdateRequest(
+    [property: JsonPropertyName("app_name")]
+    string AppName,
+    [property: JsonPropertyName("url")]
+    string Url
+);
