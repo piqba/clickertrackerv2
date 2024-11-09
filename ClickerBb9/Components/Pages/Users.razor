@@ -2,7 +2,7 @@
 @using ClickerBb9.Models
 @using ClickerBb9.Services
 @attribute [StreamRendering]
-@inject C3P0Service service
+@inject UserService service
 
 <PageTitle>Users</PageTitle>
 
@@ -43,7 +43,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var data = await service.GetClickerUser();
+        var data = await service.GetClickerUsersAsync();
         users = data.users.ToArray();
     }
 

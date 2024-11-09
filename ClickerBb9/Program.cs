@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents();
 
-builder.Services.AddHttpClient<C3P0Service>((provider, client) =>
+builder.Services.AddHttpClient<UserService>((provider, client) =>
 {
     client.BaseAddress = new Uri("http://localhost:5209");
 })
