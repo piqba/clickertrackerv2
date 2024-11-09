@@ -7,13 +7,30 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents();
 
 builder.Services.AddHttpClient<UserService>((provider, client) =>
-{
-    client.BaseAddress = new Uri("http://localhost:5209");
-})
-.ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
-{
-    PooledConnectionLifetime = TimeSpan.FromMinutes(5),
-});
+    {
+        client.BaseAddress = new Uri("http://localhost:5209");
+    })
+    .ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
+    {
+        PooledConnectionLifetime = TimeSpan.FromMinutes(5),
+    });
+builder.Services.AddHttpClient<AppService>((provider, client) =>
+    {
+        client.BaseAddress = new Uri("http://localhost:5209");
+    })
+    .ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
+    {
+        PooledConnectionLifetime = TimeSpan.FromMinutes(5),
+    });
+builder.Services.AddHttpClient<ApiKeyService>((provider, client) =>
+    {
+        client.BaseAddress = new Uri("http://localhost:5209");
+    })
+    .ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
+    {
+        PooledConnectionLifetime = TimeSpan.FromMinutes(5),
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
