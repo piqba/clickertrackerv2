@@ -1,6 +1,7 @@
 
 using ClickerC3p0.ClickerApiKeys;
 using ClickerC3p0.ClickerApps;
+using ClickerC3p0.ClickerEvents;
 using ClickerC3p0.ClickerUsers;
 using ClickerC3p0.Database;
 
@@ -40,7 +41,7 @@ foreach (var c in builder.Configuration.AsEnumerable())
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -50,6 +51,7 @@ if (app.Environment.IsDevelopment())
 // users
 app.MapClickerUsersEndpoints()
     .MapClickerApiKeysEndpoints()
-    .MapClickerAppsEndpoints();
+    .MapClickerAppsEndpoints()
+    .MapClickerEventsEndpoint();
 
 app.Run();

@@ -1,0 +1,47 @@
+@page "/apikeys"
+@using ClickerBb9.Models
+@using ClickerBb9.Services
+@inject ApiKeyService service
+<PageTitle>Apps</PageTitle>
+
+
+@if (keys == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Url</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var app in keys)
+        {
+            <tr>
+                <td>@app.Name</td>
+                <td>@app.HashValue</td>
+                <td>@app.CreatedAt</td>
+                <td>@app.UpdatedAt</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+@code {
+    private ClickerApiKey[]? keys;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var data = await service.GetClickerApisKeyAsync();
+        keys = data.keys.ToArray();
+    }
+
+}

@@ -33,7 +33,7 @@ public static class Endpoint
             return Results.Json(null, statusCode: StatusCodes.Status202Accepted);
         });
 
-        app.MapGet("/clicks", async (HttpContext ctx, IOptions<KafkaOptions> opts, CancellationToken ct) =>
+        app.MapGet("/clicks-stream", async (HttpContext ctx, IOptions<KafkaOptions> opts, CancellationToken ct) =>
         {
             ctx.Response.Headers.Append("Content-Type", "text/event-stream");
 
@@ -128,7 +128,7 @@ public static class Endpoint
                 }
             }
         });
-
+        
         return app;
     }
 }
