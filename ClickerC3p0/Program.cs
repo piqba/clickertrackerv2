@@ -36,6 +36,8 @@ builder.Services.Configure<KafkaOptions>(
 
 // Inject Kafka Service
 builder.Services.AddSingleton<KafkaService>();
+// Inject other services
+builder.Services.AddSingleton<ClickEventsService>();
 
 var app = builder.Build();
 

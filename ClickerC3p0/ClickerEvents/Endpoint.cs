@@ -7,14 +7,9 @@ public static class Endpoint
 {
     public static WebApplication MapClickerEventsEndpoint(this WebApplication app)
     {
-        app.MapGet("/api/clicker-events", async (IDBConnectionFactory dbConnectionFactory) =>
+        app.MapGet("/api/clicker-events", async (ClickEventsService svc) =>
         {
-            var dbConnection = await dbConnectionFactory.CreateConnectionAsync();
-            var events = await dbConnection.QueryAsync(
-                """
-                select * from clicker_events_simple
-                """
-            );
+            var events = await svc.GetClickerEventsAsync();
             return Results.Json(new { events }, statusCode: StatusCodes.Status200OK);
         });
         return app;
