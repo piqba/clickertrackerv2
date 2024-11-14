@@ -40,6 +40,7 @@ builder.Services.AddSingleton<KafkaService>();
 builder.Services.AddSingleton<ClickEventsService>();
 builder.Services.AddSingleton<ClickerUserService>();
 builder.Services.AddSingleton<ClickerApiKeyService>();
+builder.Services.AddSingleton<ClickerAppService>();
 
 var app = builder.Build();
 
