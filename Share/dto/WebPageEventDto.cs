@@ -2,7 +2,6 @@ using System.Text.Json.Serialization;
 
 namespace Share.dto;
 
-// TODO: pass to share project
 public record WebPageEventDto(
     [property: JsonPropertyName("page_url")]
     string PageUrl,

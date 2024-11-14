@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickerR2d2", "ClickerR2d2\ClickerR2d2.csproj", "{5A35F857-D74F-4E72-A3D8-0B0C43962AB7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickerBb8", "ClickerBb8\ClickerBb8.csproj", "{F33E818F-7FF2-41E2-BC17-A387C1E794DD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Share", "Share\Share.csproj", "{BBB63D28-A09C-4149-9A73-D72593067BFD}"
@@ -16,10 +14,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5A35F857-D74F-4E72-A3D8-0B0C43962AB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A35F857-D74F-4E72-A3D8-0B0C43962AB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A35F857-D74F-4E72-A3D8-0B0C43962AB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A35F857-D74F-4E72-A3D8-0B0C43962AB7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F33E818F-7FF2-41E2-BC17-A387C1E794DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F33E818F-7FF2-41E2-BC17-A387C1E794DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F33E818F-7FF2-41E2-BC17-A387C1E794DD}.Release|Any CPU.ActiveCfg = Release|Any CPU

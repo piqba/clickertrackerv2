@@ -3,7 +3,9 @@ using ClickerC3p0.ClickerApiKeys;
 using ClickerC3p0.ClickerApps;
 using ClickerC3p0.ClickerEvents;
 using ClickerC3p0.ClickerUsers;
+using ClickerC3p0.Clicks;
 using ClickerC3p0.Database;
+using Share;
 
 var builder = WebApplication.CreateBuilder(args);
 const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -15,6 +17,7 @@ builder.Services.AddSwaggerGen();
 
 // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/http-logging/?view=aspnetcore-8.0#enable-http-logging
 builder.Services.AddHttpLogging(o => { });
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: myAllowSpecificOrigins,
@@ -28,7 +31,11 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSingleton<IDBConnectionFactory>(_ =>
     new NpgsqlDbConnectionFactory(builder.Configuration["Database:ConnectionString"]!));
+builder.Services.Configure<KafkaOptions>(
+    builder.Configuration.GetSection("Kafka"));
 
+// Inject Kafka Service
+builder.Services.AddSingleton<KafkaService>();
 
 var app = builder.Build();
 
@@ -52,6 +59,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 app.MapClickerUsersEndpoints()
     .MapClickerApiKeysEndpoints()
     .MapClickerAppsEndpoints()
-    .MapClickerEventsEndpoint();
+    .MapClickerEventsEndpoint()
+    .MapClickEndpoint();
 
 app.Run();
