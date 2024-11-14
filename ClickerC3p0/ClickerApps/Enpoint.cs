@@ -18,17 +18,17 @@ public static class Endpoint
             return Results.Json(new { apps }, statusCode: StatusCodes.Status200OK);
         });
 
-        app.MapGet("/api/apps/{id}", async (int id, ClickerAppService svc) =>
+        app.MapGet("/api/apps/{id:int}", async (int id, ClickerAppService svc) =>
         {
             var foundApp = await svc.GetApp(id);
             return Results.Json(new { app = foundApp }, statusCode: StatusCodes.Status200OK);
         });
-        app.MapDelete("/api/apps/{id}", async (int id, ClickerAppService svc) =>
+        app.MapDelete("/api/apps/{id:int}", async (int id, ClickerAppService svc) =>
         {
             var appId = await svc.DeleteApp(id);
             return Results.Json(new { appId }, statusCode: StatusCodes.Status200OK);
         });
-        app.MapPut("/api/apps/{id}", async (int id, ClickerAppService svc, ClickerAppsUpdateRequest request) =>
+        app.MapPut("/api/apps/{id:int}", async (int id, ClickerAppService svc, ClickerAppsUpdateRequest request) =>
         {
             var appId = await svc.UpdateApp(id, request);
             return Results.Json(new { appId }, statusCode: StatusCodes.Status200OK);

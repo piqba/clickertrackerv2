@@ -21,18 +21,18 @@ public static class Endpoint
             return Results.Json(new { keys }, statusCode: StatusCodes.Status200OK);
         });
 
-        app.MapDelete("/api/keys/{id}", async (int id, ClickerApiKeyService svc) =>
+        app.MapDelete("/api/keys/{id:int}", async (int id, ClickerApiKeyService svc) =>
         {
             var rId = await svc.DeleteApiKey(id);
             return Results.Json(new { rId }, statusCode: StatusCodes.Status200OK);
         });
-        app.MapGet("/api/keys/{id}", async (int id, ClickerApiKeyService svc) =>
+        app.MapGet("/api/keys/{id:int}", async (int id, ClickerApiKeyService svc) =>
         {
             var key = await svc.GetApiKey(id);
             return Results.Json(new { key }, statusCode: StatusCodes.Status200OK);
         });
 
-        app.MapPut("/api/keys/{id}",
+        app.MapPut("/api/keys/{id:int}",
             async (int id, ClickerApiKeyService svc, ClickerApiKeysUpdateRequest request) =>
             {
                 var key = await svc.UpdateApiKey(id, request);
