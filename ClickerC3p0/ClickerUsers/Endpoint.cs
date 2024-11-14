@@ -7,28 +7,17 @@ public static class Endpoint
 {
     public static WebApplication MapClickerUsersEndpoints(this WebApplication app)
     {
-        app.MapPost("/api/users", async (IDBConnectionFactory dbConnectionFactory,
+        app.MapPost("/api/users", async (
+            ClickerUserService svc,
             RequestClickerUserCreate request) =>
         {
-            using var dbConnection = await dbConnectionFactory.CreateConnectionAsync();
-            var newId = await dbConnection.ExecuteAsync(
-                """
-                insert into clicker_users ( name)
-                values (@name)
-                """,
-                new { name = request.Name }
-            );
+            var newId  =await svc.CreateUser(request);
             return Results.Json(new { id = newId }, statusCode: StatusCodes.Status201Created);
         });
 
-        app.MapGet("/api/users", async (IDBConnectionFactory dbConnectionFactory) =>
+        app.MapGet("/api/users", async (ClickerUserService svc) =>
         {
-            using var dbConnection = await dbConnectionFactory.CreateConnectionAsync();
-            var users = await dbConnection.QueryAsync(
-                """
-                select * from clicker_users
-                """
-            );
+            var users = await svc.GetUsers();
             return Results.Json(new { users }, statusCode: StatusCodes.Status200OK);
         });
 
