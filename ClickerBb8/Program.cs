@@ -1,6 +1,7 @@
 using ClickerBb8;
 using ClickerBb8.Database;
 using Share;
+using Share.IKafkaService;
 
 
 var builder = Host.CreateApplicationBuilder(args);

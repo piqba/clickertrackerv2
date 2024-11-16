@@ -6,6 +6,8 @@ using ClickerC3p0.ClickerUsers;
 using ClickerC3p0.Clicks;
 using ClickerC3p0.Database;
 using Share;
+using Share.dto;
+using Share.IKafkaService;
 
 var builder = WebApplication.CreateBuilder(args);
 const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -41,7 +43,6 @@ builder.Services.AddSingleton<ClickEventsService>();
 builder.Services.AddSingleton<ClickerUserService>();
 builder.Services.AddSingleton<ClickerApiKeyService>();
 builder.Services.AddSingleton<ClickerAppService>();
-
 var app = builder.Build();
 
 Console.WriteLine($"Configuration Time: {DateTime.UtcNow} UTC");

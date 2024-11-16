@@ -1,7 +1,10 @@
 using System.Text.Json;
+using System.Threading.Channels;
 using Confluent.Kafka;
 using Microsoft.Extensions.Options;
 using Share;
+using Share.dto;
+using Share.IKafkaService;
 
 namespace ClickerC3p0.Clicks;
 
@@ -23,7 +26,7 @@ public class KafkaService(IOptions<KafkaOptions> opts)
         }
     }
 
-    public async Task ConsumeClickEvents(HttpContext ctx ,CancellationToken ct = default)
+    public async Task ConsumeClickEvents( HttpContext ctx, CancellationToken ct = default)
     {
         
             using var consumer = new ConsumerBuilder<Ignore, string>(new ConsumerConfig(opts.Value.KafkaConfig))
@@ -66,7 +69,7 @@ public class KafkaService(IOptions<KafkaOptions> opts)
                 })
                 .Build();
             consumer.Subscribe(opts.Value.TopicPrefix);
-
+            
             try
             {
                 while (true)
@@ -85,8 +88,10 @@ public class KafkaService(IOptions<KafkaOptions> opts)
 
                         Console.WriteLine(
                             $"Received message at {consumeResult.TopicPartitionOffset}: {consumeResult.Message.Value}");
+                        
+                        // Create a new channel for strings
                         await ctx.Response.WriteAsync($"data: ", cancellationToken: ct);
-                        await JsonSerializer.SerializeAsync(ctx.Response.Body, consumeResult.Message.Value, cancellationToken: ct);
+                        await JsonSerializer.SerializeAsync(ctx.Response.Body, consumeResult.Message, cancellationToken: ct);
                         await ctx.Response.WriteAsync($"\n\n", cancellationToken: ct);
                         await ctx.Response.Body.FlushAsync(ct);
                         try
@@ -114,4 +119,5 @@ public class KafkaService(IOptions<KafkaOptions> opts)
                 consumer.Close();
             }
     }
+
 }

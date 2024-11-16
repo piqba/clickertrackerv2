@@ -5,27 +5,24 @@ using Dapper;
 using Microsoft.Extensions.Options;
 using Share;
 using Share.dto;
+using Share.IKafkaService;
 
 namespace ClickerBb8;
 
-public class Worker : BackgroundService
+public class Worker(
+    ILogger<Worker> logger, 
+    IOptions<KafkaOptions> opts, 
+    IDBConnectionFactory dbConnectionFactory
+    )
+    : BackgroundService, IMessageHandler<ConsumeResult<Ignore,string>>
 {
-    private readonly ILogger<Worker> _logger;
-    private readonly IOptions<KafkaOptions> _opts;
-    private readonly IDBConnectionFactory _dbConnectionFactory;
-
-    public Worker(ILogger<Worker> logger, IOptions<KafkaOptions> opts, IDBConnectionFactory dbConnectionFactory)
-    {
-        _logger = logger;
-        _opts = opts;
-        _dbConnectionFactory = dbConnectionFactory;
-    }
+    private readonly ILogger<Worker> _logger = logger;
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            using (var consumer = new ConsumerBuilder<Ignore, string>(new ConsumerConfig(_opts.Value.KafkaConfig))
+            using (var consumer = new ConsumerBuilder<Ignore, string>(new ConsumerConfig(opts.Value.KafkaConfig))
                        // Note: All handlers are called on the main .Consume thread.
                        .SetErrorHandler((_, e) => Console.WriteLine($"Error: {e.Reason}"))
                        .SetStatisticsHandler((_, json) => Console.WriteLine($"Statistics: {json}"))
@@ -66,7 +63,7 @@ public class Worker : BackgroundService
                        .Build())
 
             {
-                consumer.Subscribe(_opts.Value.TopicPrefix);
+                consumer.Subscribe(opts.Value.TopicPrefix);
 
                 try
                 {
@@ -88,30 +85,9 @@ public class Worker : BackgroundService
                             // Console.WriteLine(
                             //     $"Received message at {consumeResult.TopicPartitionOffset}: {consumeResult.Message.Value}");
                             // deserialize
-                            var eventDto = JsonSerializer.Deserialize<WebPageEventDto>(consumeResult.Message.Value);
-                            // Insert on db
-                            using var dbConnection = await _dbConnectionFactory.CreateConnectionAsync(stoppingToken);
-                            await dbConnection.ExecuteAsync(
-                                """
-                                insert into clicker_events_simple (element_id, element_type, element_text, page_url, page_title, path_name, id, country, locale, platform, user_agent,kafka_offset) 
-                                values (@ElementId,@EventType,@ElementText,@PageUrl,@PageTitle, @PathName,@Id,@Country,@Locale,@Platform,@UserAgent,@KafkaOffset)
-                                """,
-                                new
-                                {
-                                    eventDto.ElementId,
-                                    eventDto.EventType,
-                                    ElementText = eventDto.ElementType,
-                                    @eventDto.PageUrl,
-                                    @eventDto.PageTitle,
-                                    @eventDto.PathName,
-                                    @eventDto.Id,
-                                    @eventDto.Country,
-                                    @eventDto.Locale,
-                                    @eventDto.Platform,
-                                    @eventDto.UserAgent,
-                                    kafkaOffset = consumeResult.Offset.Value
-                                }
-                            );
+
+                                await HandlerMessageAsync(consumeResult,
+                                    stoppingToken);
 
                             try
                             {
@@ -139,5 +115,35 @@ public class Worker : BackgroundService
                 }
             }
         }
+    }
+
+    public async Task HandlerMessageAsync(ConsumeResult<Ignore, string> message,
+        CancellationToken cancellationToken = default)
+    {
+        var eventDto = JsonSerializer.Deserialize<WebPageEventDto>(message.Message.Value);
+
+        // Insert on db
+        using var dbConnection = await dbConnectionFactory.CreateConnectionAsync(cancellationToken);
+        await dbConnection.ExecuteAsync(
+            """
+            insert into clicker_events_simple (element_id, element_type, element_text, page_url, page_title, path_name, id, country, locale, platform, user_agent,kafka_offset) 
+            values (@ElementId,@EventType,@ElementText,@PageUrl,@PageTitle, @PathName,@Id,@Country,@Locale,@Platform,@UserAgent,@KafkaOffset)
+            """,
+            new
+            {
+                eventDto.ElementId,
+                eventDto.EventType,
+                ElementText = eventDto.ElementType,
+                @eventDto.PageUrl,
+                @eventDto.PageTitle,
+                @eventDto.PathName,
+                @eventDto.Id,
+                @eventDto.Country,
+                @eventDto.Locale,
+                @eventDto.Platform,
+                @eventDto.UserAgent,
+                kafkaOffset = message.Offset.Value
+            }
+        );
     }
 }

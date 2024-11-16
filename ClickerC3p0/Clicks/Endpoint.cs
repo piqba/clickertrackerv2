@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Threading.Channels;
 using Confluent.Kafka;
 using Microsoft.Extensions.Options;
 using Share;
@@ -17,10 +18,13 @@ public static class Endpoint
             return Results.Json(null, statusCode: StatusCodes.Status202Accepted);
         });
 
-        app.MapGet("/clicks-stream", async (HttpContext ctx, KafkaService svc) =>
+        app.MapGet("/clicks-stream", async (HttpContext ctx, KafkaService svc, CancellationToken ct) =>
         {
             ctx.Response.Headers.Append("Content-Type", "text/event-stream");
-            await svc.ConsumeClickEvents(ctx);
+          
+            await svc.ConsumeClickEvents(ctx,ct);
+
+
         });
         
         return app;
