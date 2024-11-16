@@ -1,4 +1,4 @@
-namespace Share.IKafkaService;
+namespace Share.Kafka;
 
 public class KafkaOptions
 {

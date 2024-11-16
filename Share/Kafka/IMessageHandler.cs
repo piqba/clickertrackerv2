@@ -1,4 +1,4 @@
-namespace Share.IKafkaService;
+namespace Share.Kafka;
 
 public interface IMessageHandler<in TValue>
 {

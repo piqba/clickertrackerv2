@@ -3,14 +3,9 @@ using Npgsql;
 
 namespace ClickerBb8.Database;
 
-public class NpgsqlDbConnectionFactory : IDBConnectionFactory
+public class NpgsqlDbConnectionFactory(string connectionString) : IDbConnectionFactory
 {
-    private readonly string _connectionString;
-
-    public NpgsqlDbConnectionFactory(string connectionString)
-    {
-        _connectionString = connectionString;
-    }
+    private readonly string _connectionString = connectionString;
 
     public async Task<IDbConnection> CreateConnectionAsync(CancellationToken cancellationToken = default)
     {
@@ -21,7 +16,7 @@ public class NpgsqlDbConnectionFactory : IDBConnectionFactory
 }
 
 
-public interface IDBConnectionFactory
+public interface IDbConnectionFactory
 {
     Task<IDbConnection> CreateConnectionAsync(CancellationToken cancellationToken = default);
 }

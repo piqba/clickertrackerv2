@@ -5,7 +5,7 @@ using Dapper;
 
 namespace ClickerC3p0.ClickerApiKeys;
 
-public class ClickerApiKeyService(IDBConnectionFactory dbConnectionFactory)
+public class ClickerApiKeyService(IDbConnectionFactory dbConnectionFactory)
 {
     public async Task<int> CreateApiKey(ClickerApiKeysCreateRequest apikey)
     {

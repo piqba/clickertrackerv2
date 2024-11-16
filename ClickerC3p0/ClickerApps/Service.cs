@@ -3,7 +3,7 @@ using Dapper;
 
 namespace ClickerC3p0.ClickerApps;
 
-public class ClickerAppService(IDBConnectionFactory dbConnectionFactory)
+public class ClickerAppService(IDbConnectionFactory dbConnectionFactory)
 {
     public async Task<int> CreateApp(ClickerAppsCreateRequest newApp)
     {

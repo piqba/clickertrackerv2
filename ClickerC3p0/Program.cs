@@ -1,4 +1,3 @@
-
 using ClickerC3p0.ClickerApiKeys;
 using ClickerC3p0.ClickerApps;
 using ClickerC3p0.ClickerEvents;
@@ -7,7 +6,7 @@ using ClickerC3p0.Clicks;
 using ClickerC3p0.Database;
 using Share;
 using Share.dto;
-using Share.IKafkaService;
+using Share.Kafka;
 
 var builder = WebApplication.CreateBuilder(args);
 const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -31,7 +30,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddSingleton<IDBConnectionFactory>(_ =>
+builder.Services.AddSingleton<IDbConnectionFactory>(_ =>
     new NpgsqlDbConnectionFactory(builder.Configuration["Database:ConnectionString"]!));
 builder.Services.Configure<KafkaOptions>(
     builder.Configuration.GetSection("Kafka"));
@@ -43,6 +42,11 @@ builder.Services.AddSingleton<ClickEventsService>();
 builder.Services.AddSingleton<ClickerUserService>();
 builder.Services.AddSingleton<ClickerApiKeyService>();
 builder.Services.AddSingleton<ClickerAppService>();
+
+// Inject kafka factories
+builder.Services.AddSingleton<ProducerFactory<string>>();
+builder.Services.AddSingleton<ConsumerFactory<string>>();
+
 var app = builder.Build();
 
 Console.WriteLine($"Configuration Time: {DateTime.UtcNow} UTC");

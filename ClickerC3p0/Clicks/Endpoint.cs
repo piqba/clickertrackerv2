@@ -21,10 +21,7 @@ public static class Endpoint
         app.MapGet("/clicks-stream", async (HttpContext ctx, KafkaService svc, CancellationToken ct) =>
         {
             ctx.Response.Headers.Append("Content-Type", "text/event-stream");
-          
             await svc.ConsumeClickEvents(ctx,ct);
-
-
         });
         
         return app;

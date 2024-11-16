@@ -3,7 +3,7 @@ using Dapper;
 
 namespace ClickerC3p0.ClickerEvents;
 
-public class ClickEventsService(IDBConnectionFactory dbConnectionFactory)
+public class ClickEventsService(IDbConnectionFactory dbConnectionFactory)
 {
 
     public async Task<IEnumerable<dynamic>> GetClickerEventsAsync()

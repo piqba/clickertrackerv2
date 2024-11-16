@@ -3,7 +3,7 @@ using Dapper;
 
 namespace ClickerC3p0.ClickerUsers;
 
-public class ClickerUserService(IDBConnectionFactory dbConnectionFactory)
+public class ClickerUserService(IDbConnectionFactory dbConnectionFactory)
 {
     public async Task<int> CreateUser(RequestClickerUserCreate newUser)
     {

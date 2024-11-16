@@ -3,25 +3,18 @@ using Npgsql;
 
 namespace ClickerC3p0.Database;
 
-public class NpgsqlDbConnectionFactory : IDBConnectionFactory
+public class NpgsqlDbConnectionFactory(string connectionString) : IDbConnectionFactory
 {
-    private readonly string _connectionString;
-
-    public NpgsqlDbConnectionFactory(string connectionString)
-    {
-        _connectionString = connectionString;
-    }
-
     public async Task<IDbConnection> CreateConnectionAsync(CancellationToken cancellationToken = default)
     {
-        var connection = new NpgsqlConnection(_connectionString);
+        var connection = new NpgsqlConnection(connectionString);
         await connection.OpenAsync(cancellationToken);
         return connection;
     }
 }
 
 
-public interface IDBConnectionFactory
+public interface IDbConnectionFactory
 {
     Task<IDbConnection> CreateConnectionAsync(CancellationToken cancellationToken = default);
 }
