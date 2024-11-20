@@ -4,9 +4,14 @@ using ClickerC3p0.ClickerEvents;
 using ClickerC3p0.ClickerUsers;
 using ClickerC3p0.Clicks;
 using ClickerC3p0.Database;
+using ClickerC3p0.Extensions;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Share;
 using Share.dto;
 using Share.Kafka;
+using Share.Otel;
 
 var builder = WebApplication.CreateBuilder(args);
 const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -35,6 +40,7 @@ builder.Services.AddSingleton<IDbConnectionFactory>(_ =>
 builder.Services.Configure<KafkaOptions>(
     builder.Configuration.GetSection("Kafka"));
 
+
 // Inject Kafka Service
 builder.Services.AddSingleton<KafkaService>();
 // Inject other services
@@ -46,6 +52,9 @@ builder.Services.AddSingleton<ClickerAppService>();
 // Inject kafka factories
 builder.Services.AddSingleton<ProducerFactory<string>>();
 builder.Services.AddSingleton<ConsumerFactory<string>>();
+
+// OTEL
+builder.Services.AddOtel(builder.Configuration);
 
 var app = builder.Build();
 
@@ -71,5 +80,9 @@ app.MapClickerUsersEndpoints()
     .MapClickerAppsEndpoints()
     .MapClickerEventsEndpoint()
     .MapClickEndpoint();
+
+
+// Configure the Prometheus scraping endpoint
+app.MapPrometheusScrapingEndpoint();
 
 app.Run();

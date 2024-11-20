@@ -4,6 +4,7 @@ using Confluent.Kafka;
 using Microsoft.Extensions.Options;
 using Share;
 using Share.dto;
+using Share.Otel;
 
 namespace ClickerC3p0.Clicks;
 
@@ -13,8 +14,14 @@ public static class Endpoint
     {
         app.MapPost("/clicks", async (WebPageEventDto webPageEventDto, KafkaService svc) =>
         {
+            // Create a new Activity scoped to the method
+            using var activity = ClicksMetricsCustoms.ClicksTrackerActivitySource.StartActivity(Constants.ClicksActivity);
             var jsonString = JsonSerializer.Serialize(webPageEventDto);
             await svc.SendClicksEventsAsync(jsonString);
+            // Increment the custom counter
+            ClicksMetricsCustoms.CountClicks.Add(1);
+            // Add a tag to the Activity
+            activity?.SetTag($"{Constants.ClicksTagKeyPrefix}.request", webPageEventDto);
             return Results.Json(null, statusCode: StatusCodes.Status202Accepted);
         });
 

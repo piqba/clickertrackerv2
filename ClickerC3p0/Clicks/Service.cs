@@ -2,6 +2,7 @@ using System.Text.Json;
 using Confluent.Kafka;
 using Microsoft.Extensions.Options;
 using Share.Kafka;
+using Share.Otel;
 
 namespace ClickerC3p0.Clicks;
 
@@ -12,9 +13,12 @@ public class KafkaService(
 {
     public async Task SendClicksEventsAsync(string jsonString)
     {
+        using var activity = ClicksMetricsCustoms.ClicksTrackerActivitySource.StartActivity(Constants.ClicksActivity);
         var cfg = opts.Value;
         producerFactory.CreateProducer(new ProducerConfig(opts.Value.KafkaConfig));
         await producerFactory.ProduceAsync(opts.Value.TopicPrefix, jsonString);
+        activity?.SetTag($"{Constants.ClicksTagKeyPrefix}.SendClicksEventsAsync", "SendClicksEventsAsync service");
+
     }
 
     public async Task ConsumeClickEvents(HttpContext ctx, CancellationToken ct = default)

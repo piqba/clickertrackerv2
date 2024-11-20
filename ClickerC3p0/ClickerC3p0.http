@@ -45,3 +45,5 @@ GET {{HostAddress}}/clicks-stream/
 Accept: application/json
 Content-Type: text/event-stream
 
+###
+GET {{HostAddress}}/metrics
