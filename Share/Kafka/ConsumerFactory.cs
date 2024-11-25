@@ -27,6 +27,7 @@ public class ConsumerFactory<TValue> : IKafkaConsumer<TValue>
                 // to assign to, e.g.:
                 // return partitions.Select(tp => new TopicPartitionOffset(tp, externalOffsets[tp]));
             })
+            // .SetValueDeserializer() // check mario code.
             .SetPartitionsRevokedHandler((c, partitions) =>
             {
                 // Since a cooperative assignor (CooperativeSticky) has been configured, the revoked
@@ -40,6 +41,7 @@ public class ConsumerFactory<TValue> : IKafkaConsumer<TValue>
                     string.Join(',', remaining.Select(p => p.Partition.Value)) +
                     "]");
             })
+            .SetValueDeserializer(new JsonValueSerializer<TValue>())
             .SetPartitionsLostHandler((c, partitions) =>
             {
                 // The lost partitions handler is called when the consumer detects that it has lost ownership
@@ -50,13 +52,13 @@ public class ConsumerFactory<TValue> : IKafkaConsumer<TValue>
 
     }
 
-    public void ConsumerHandler(List<string> topics,Action<ConsumeResult<Ignore, TValue>>? callback, CancellationToken ct = default)
+    public void ConsumerHandler(List<string> topics,Action<ConsumeResult<Ignore, TValue>>? callback, CancellationToken ct )
     {
         _consumer.Subscribe(topics);
 
         try
         {
-            while (true)
+            while (!ct.IsCancellationRequested)
             {
                 try
                 {

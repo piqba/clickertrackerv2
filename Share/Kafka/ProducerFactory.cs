@@ -9,7 +9,9 @@ public class ProducerFactory<TValue> : IKafkaProducer<TValue>
 
     public void CreateProducer(ProducerConfig producerConfig, CancellationToken cancellationToken = default)
     {
-        _producer = new ProducerBuilder<Null, TValue>(producerConfig).Build();
+        _producer = new ProducerBuilder<Null, TValue>(producerConfig)
+            .SetValueSerializer(new JsonValueSerializer<TValue>())
+            .Build();
     }
 
     public async Task ProduceAsync(string topic, TValue value, CancellationToken cancellationToken = default)

@@ -50,8 +50,8 @@ builder.Services.AddSingleton<ClickerApiKeyService>();
 builder.Services.AddSingleton<ClickerAppService>();
 
 // Inject kafka factories
-builder.Services.AddSingleton<ProducerFactory<string>>();
-builder.Services.AddSingleton<ConsumerFactory<string>>();
+builder.Services.AddSingleton<ProducerFactory<WebPageEventDto>>();
+builder.Services.AddSingleton<ConsumerFactory<WebPageEventDto>>();
 
 // OTEL
 builder.Services.AddOtel(builder.Configuration);

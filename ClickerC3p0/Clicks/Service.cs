@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Confluent.Kafka;
 using Microsoft.Extensions.Options;
+using Share.dto;
 using Share.Kafka;
 using Share.Otel;
 
@@ -8,10 +9,10 @@ namespace ClickerC3p0.Clicks;
 
 public class KafkaService(
     IOptions<KafkaOptions> opts,
-    ProducerFactory<string> producerFactory,
-    ConsumerFactory<string> consumerFactory)
+    ProducerFactory<WebPageEventDto> producerFactory,
+    ConsumerFactory<WebPageEventDto> consumerFactory)
 {
-    public async Task SendClicksEventsAsync(string jsonString)
+    public async Task SendClicksEventsAsync(WebPageEventDto jsonString)
     {
         using var activity = ClicksMetricsCustoms.ClicksTrackerActivitySource.StartActivity(Constants.ClicksActivity);
         var cfg = opts.Value;

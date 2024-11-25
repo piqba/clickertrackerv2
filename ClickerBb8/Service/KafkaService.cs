@@ -10,18 +10,22 @@ namespace ClickerBb8.Service;
 
 public class KafkaService(
     IOptions<KafkaOptions> opts,
+    ILogger<KafkaService> logger,
     IDbConnectionFactory dbConnectionFactory,
-    ConsumerFactory<string> consumerFactory)
+    ConsumerFactory<WebPageEventDto> consumerFactory)
 {
     public async Task RunAsync(CancellationToken stoppingToken)
     {
+       
         var topics = opts.Value.TopicPrefix.Split(',').ToList();
         consumerFactory.CreateConsumer(new ConsumerConfig(opts.Value.KafkaConfig), stoppingToken);
+        
         consumerFactory.ConsumerHandler(
             topics,
             async (consumerResult) =>
             {
-                var eventDto = JsonSerializer.Deserialize<WebPageEventDto>(consumerResult.Message.Value);
+                // var eventDto = JsonSerializer.Deserialize<WebPageEventDto>(consumerResult.Message.Value);
+                var eventDto = consumerResult.Message.Value;
 
                 // Insert on db
                 using var dbConnection = await dbConnectionFactory.CreateConnectionAsync(stoppingToken);

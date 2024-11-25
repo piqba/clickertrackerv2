@@ -5,7 +5,7 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "environmentVariables": {
-        "DOTNET_ENVIRONMENT": "Staging"
+        "DOTNET_ENVIRONMENT": "Development"
       }
     }
   }

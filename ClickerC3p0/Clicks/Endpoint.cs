@@ -17,7 +17,7 @@ public static class Endpoint
             // Create a new Activity scoped to the method
             using var activity = ClicksMetricsCustoms.ClicksTrackerActivitySource.StartActivity(Constants.ClicksActivity);
             var jsonString = JsonSerializer.Serialize(webPageEventDto);
-            await svc.SendClicksEventsAsync(jsonString);
+            await svc.SendClicksEventsAsync(webPageEventDto);
             // Increment the custom counter
             ClicksMetricsCustoms.CountClicks.Add(1);
             // Add a tag to the Activity

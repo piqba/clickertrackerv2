@@ -2,6 +2,7 @@ using ClickerBb8;
 using ClickerBb8.Database;
 using ClickerBb8.Service;
 using Share;
+using Share.dto;
 using Share.Kafka;
 
 
@@ -12,7 +13,7 @@ builder.Services.AddSingleton<IDbConnectionFactory>(_ =>
     new NpgsqlDbConnectionFactory(builder.Configuration["Database:ConnectionString"]!));
 // Inject kafka factories
 builder.Services.AddSingleton<KafkaService>();
-builder.Services.AddSingleton<ConsumerFactory<string>>();
+builder.Services.AddSingleton<ConsumerFactory<WebPageEventDto>>();
 
 foreach (var c in builder.Configuration.AsEnumerable())
 {
